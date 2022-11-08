@@ -1,5 +1,10 @@
+import models.Bus;
+
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+
+        Bus bus = new Bus();
+
+        bus.drive();
     }
 }
