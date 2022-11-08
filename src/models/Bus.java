@@ -5,12 +5,12 @@ import java.util.List;
 
 public class Bus {
 
-    private int price = 5;
+    private int price = 50;
     private int capacity = 30;
     private List<Station> stations = new ArrayList<>();
     private List<Passenger> passengers = new ArrayList<>();
-    private List<Passenger> passengersToExit;
     private int cash = 0;
+    private int lateForWork = 0;
 
     /**for (int i = 0; i < stations.size(); i++) {
         Station s = stations.get(i);
@@ -24,24 +24,43 @@ public class Bus {
     }**/
 
 
-    public Integer drive() {
-        int cash = 0;
+    public void drive() {
         stations = generateStations();
 
 
         for (int i = 0; i < stations.size(); i++) {
             Station s = stations.get(i);
             int currentStationId = s.getStationId();
-            getPassengers(s);
-            List<Passenger> passengersToExit = askPassengersToExit(currentStationId);
-            askToExit(passengersToExit);
+            if (isLastStation(s)) {
+                receivePassengers(this.passengers);
+            } else {
+                getPassengers(s);
+                List<Passenger> passengersToExit = askPassengersToExit(currentStationId);
+                askToExit(passengersToExit);
+            }
 
-            //if (!isLastStation(i)) {
-            //    receivePassengers(s);
-            //}
         }
-        return cash;
+        System.out.println();
+        System.out.println("Людей опоздало на работу: " + lateForWork);
+        System.out.println();
+        System.out.println("* * * * * * * * * * * * * * * * * * * *");
+        System.out.println("Автобус заработал за рейс: " + cash);
     }
+
+    public void receivePassengers(List<Passenger> passengers) {
+        this.passengers.removeAll(passengers);
+    }
+
+    public boolean isLastStation(Station station) {
+        if ( station.getStationId() == this.stations.size()) {
+            System.out.println("Последняя станция " + station.getStationId());
+            return true;
+        } else return false;
+    }
+
+    /** удаляем из списка пассажиров тех, кто выходит.
+     * Через "==", а не "equals"  потому что это должны быть именно эти люди (???).
+     */
     public void askToExit(List<Passenger> passengersToExit) {
 
         for (int i = 0; i < passengers.size(); i++) {
@@ -53,7 +72,9 @@ public class Bus {
         }
     }
 
+    // формируем список пассажиров на выход через сравнение точки назначения и текущей станции
     public List<Passenger> askPassengersToExit(int currentStationId) {
+
         List<Passenger> passengersToExit = new ArrayList<>();
 
         for (int i = 0; i < this.passengers.size(); i++) {
@@ -69,13 +90,16 @@ public class Bus {
 
         List<Passenger> enteringPassengers = station.getPassengersOnStation();
 
-        if (passengers.size() <= capacity) {
-            for (int i = 0; i < enteringPassengers.size(); i++) {
-                this.passengers.add(enteringPassengers.get(i));
-                this.cash += price;
-            }
-        } else {
-            System.out.println("На станции " + station.getStationId() + "не смогли сесть все пассажиры");
+        for (int i = 0; i < enteringPassengers.size(); i++) {
+            if (enteringPassengers.get(i).getFinalDestination() > station.getStationId()) {
+                if (this.passengers.size() <= capacity) {
+                    this.passengers.add(enteringPassengers.get(i));
+                    this.cash += price;
+                } else {
+                    this.lateForWork++;
+                    System.out.println("На станции " + station.getStationId() + " не смогли сесть все пассажиры");
+                }
+            } else System.out.println("На станции " + station.getStationId() + " пассажиру нужен другой автобус -_- ");
         }
     }
 
@@ -85,23 +109,14 @@ public class Bus {
         for (int i = 1; i < 6; i++) {
             Station station = new Station();
             station.setStationId(i);
+            System.out.println("Generated station #" + station.getStationId());
             station.setPassengersOnStation(Passenger.generatePassengers(station.getPassengerSum()));
             stations.add(i-1, station);
 
-            System.out.println("Generated station #" + station.getStationId() + " with " + station.getPassengerSum() + "passengers.");
+            System.out.println("#" + station.getPassengerSum() + " passengers.");
             System.out.println();
         }
         return stations;
-    }
-
-
-
-    public void setStations(List<Station> stations) {
-        this.stations = stations;
-    }
-
-    public void setPassengers(List<Passenger> passengers) {
-        this.passengers = passengers;
     }
 
 
