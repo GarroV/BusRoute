@@ -8,7 +8,7 @@ public class Station {
     private int id = 0;
     private List<Passenger> passengersOnStation;
     Random random = new Random();
-    private int passengerSum = (random.nextInt(10)+1);
+    private int passengerSum = (random.nextInt(15)+1);
 
 
 
