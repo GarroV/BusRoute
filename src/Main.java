@@ -5,6 +5,8 @@ public class Main {
 
         Bus bus = new Bus();
 
-        bus.drive();
+        for (int i = 0; i < 100; i++) {
+            bus.drive();
+        }
     }
 }
