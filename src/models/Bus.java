@@ -40,11 +40,12 @@ public class Bus {
             }
 
         }
-        System.out.println();
-        System.out.println("Людей опоздало на работу: " + lateForWork);
-        System.out.println();
-        System.out.println("* * * * * * * * * * * * * * * * * * * *");
+        //System.out.println();
+        //System.out.println("Людей опоздало на работу: " + lateForWork);
+        //System.out.println();
+        //System.out.println("* * * * * * * * * * * * * * * * * * * *");
         System.out.println("Автобус заработал за рейс: " + cash);
+        this.cash = 0;
     }
 
     public void receivePassengers(List<Passenger> passengers) {
@@ -52,10 +53,8 @@ public class Bus {
     }
 
     public boolean isLastStation(Station station) {
-        if ( station.getStationId() == this.stations.size()) {
-            System.out.println("Последняя станция " + station.getStationId());
-            return true;
-        } else return false;
+        //System.out.println("Последняя станция " + station.getStationId());
+        return station.getStationId() == this.stations.size();
     }
 
     /** удаляем из списка пассажиров тех, кто выходит.
@@ -97,9 +96,9 @@ public class Bus {
                     this.cash += price;
                 } else {
                     this.lateForWork++;
-                    System.out.println("На станции " + station.getStationId() + " не смогли сесть все пассажиры");
+                    //System.out.println("На станции " + station.getStationId() + " не смогли сесть все пассажиры");
                 }
-            } else System.out.println("На станции " + station.getStationId() + " пассажиру нужен другой автобус -_- ");
+            } //else System.out.println("На станции " + station.getStationId() + " пассажиру нужен другой автобус -_- ");
         }
     }
 
@@ -109,12 +108,12 @@ public class Bus {
         for (int i = 1; i < 6; i++) {
             Station station = new Station();
             station.setStationId(i);
-            System.out.println("Generated station #" + station.getStationId());
+            //System.out.println("Generated station #" + station.getStationId());
             station.setPassengersOnStation(Passenger.generatePassengers(station.getPassengerSum()));
             stations.add(i-1, station);
 
-            System.out.println("#" + station.getPassengerSum() + " passengers.");
-            System.out.println();
+            //System.out.println("#" + station.getPassengerSum() + " passengers.");
+            //System.out.println();
         }
         return stations;
     }
