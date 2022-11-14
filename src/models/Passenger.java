@@ -21,7 +21,7 @@ public class Passenger {
             Passenger passenger = new Passenger();
             passengers.add(i-1,passenger);
 
-            System.out.println("Generated passenger #" + i + " with final destination " + passenger.getFinalDestination());
+            //System.out.println("Generated passenger #" + i + " with final destination " + passenger.getFinalDestination());
 
         }
         System.out.println();
